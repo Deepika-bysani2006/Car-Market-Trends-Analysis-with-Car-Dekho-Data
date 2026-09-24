@@ -548,7 +548,6 @@ elif page == "🔎 Explore Data":
                     "Kms_Driven": ":,", "Selling_Price": ":.2f"},
         opacity=0.70, size_max=9,
         color_discrete_sequence=PALETTE,
-        trendline="ols",
         title=f"Kms Driven vs Selling Price  (r = {df['Kms_Driven'].corr(df['Selling_Price']):.3f})",
         labels={"Kms_Driven": "Kilometres Driven", "Selling_Price": "Selling Price (Rs L)"},
     )
@@ -563,7 +562,6 @@ elif page == "🔎 Explore Data":
         color="Fuel_Type", hover_name="Car_Name",
         opacity=0.70, size_max=9,
         color_discrete_sequence=PALETTE,
-        trendline="ols",
         title=f"Car Age vs Selling Price  (r = {df['Car_Age'].corr(df['Selling_Price']):.3f})",
         labels={"Car_Age": "Car Age (Years)", "Selling_Price": "Selling Price (Rs L)"},
     )
