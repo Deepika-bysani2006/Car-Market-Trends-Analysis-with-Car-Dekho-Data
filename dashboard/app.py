@@ -704,57 +704,117 @@ very different from the training data may be less reliable.
     # ── Input form ─────────────────────────────────────────────────────────────
     section("Enter Vehicle Details")
 
+    # Fix label visibility — override any dark-theme leakage into main content
+    st.markdown("""
+    <style>
+      /* Force all widget labels in main content to be dark and visible */
+      .main .stNumberInput label,
+      .main .stSelectbox label,
+      div[data-testid="stNumberInput"] label,
+      div[data-testid="stSelectbox"] label {
+        color: #1e293b !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+      }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # ── Row 1: section headers ────────────────────────────────────────────────
+    col1, col2, col3 = st.columns(3, gap="large")
+    with col1:
+        st.markdown(
+            "<div style='background:#eff6ff;border-left:4px solid #2563eb;"
+            "padding:8px 12px;border-radius:6px;margin-bottom:10px;'>"
+            "<span style='font-weight:700;color:#1e40af;font-size:14px;'>"
+            "🔢 Numeric Details</span></div>",
+            unsafe_allow_html=True,
+        )
+    with col2:
+        st.markdown(
+            "<div style='background:#f0fdf4;border-left:4px solid #16a34a;"
+            "padding:8px 12px;border-radius:6px;margin-bottom:10px;'>"
+            "<span style='font-weight:700;color:#15803d;font-size:14px;'>"
+            "📅 Age & Ownership</span></div>",
+            unsafe_allow_html=True,
+        )
+    with col3:
+        st.markdown(
+            "<div style='background:#fef3c7;border-left:4px solid #d97706;"
+            "padding:8px 12px;border-radius:6px;margin-bottom:10px;'>"
+            "<span style='font-weight:700;color:#92400e;font-size:14px;'>"
+            "⚙️ Vehicle Type</span></div>",
+            unsafe_allow_html=True,
+        )
+
+    # ── Row 2: inputs ─────────────────────────────────────────────────────────
     col1, col2, col3 = st.columns(3, gap="large")
 
     with col1:
-        st.markdown("**🔢 Numeric Details**")
+        st.markdown("<p style='color:#1e293b;font-size:13px;font-weight:600;margin-bottom:2px;'>💰 Present Price (Rs Lakhs)</p>", unsafe_allow_html=True)
         inp_present = st.number_input(
             "Present Price (Rs Lakhs)",
             min_value=0.10, max_value=100.0, value=6.0, step=0.10,
             help="Current showroom / market price of the car model.",
+            label_visibility="collapsed",
         )
+        st.markdown("<p style='color:#1e293b;font-size:13px;font-weight:600;margin-bottom:2px;margin-top:10px;'>🛣️ Kilometres Driven</p>", unsafe_allow_html=True)
         inp_kms = st.number_input(
             "Kilometres Driven",
             min_value=0, max_value=600_000, value=30_000, step=1000,
             help="Total kilometres the vehicle has been driven.",
+            label_visibility="collapsed",
         )
 
     with col2:
-        st.markdown("**📅 Age & Ownership**")
+        st.markdown("<p style='color:#1e293b;font-size:13px;font-weight:600;margin-bottom:2px;'>📅 Year of Manufacture</p>", unsafe_allow_html=True)
         inp_year = st.number_input(
             "Year of Manufacture",
             min_value=1990, max_value=2024, value=2016, step=1,
             help="Year the vehicle was manufactured.",
+            label_visibility="collapsed",
         )
+        st.markdown("<p style='color:#1e293b;font-size:13px;font-weight:600;margin-bottom:2px;margin-top:10px;'>👤 Number of Previous Owners</p>", unsafe_allow_html=True)
         inp_owner = st.selectbox(
             "Number of Previous Owners",
             options=[0, 1, 2, 3],
             help="0 = first owner (you are the first buyer).",
+            label_visibility="collapsed",
         )
 
     with col3:
-        st.markdown("**⚙️ Vehicle Type**")
+        st.markdown("<p style='color:#1e293b;font-size:13px;font-weight:600;margin-bottom:2px;'>⛽ Fuel Type</p>", unsafe_allow_html=True)
         inp_fuel = st.selectbox(
             "Fuel Type",
             options=["Petrol", "Diesel", "CNG"],
+            label_visibility="collapsed",
         )
+        st.markdown("<p style='color:#1e293b;font-size:13px;font-weight:600;margin-bottom:2px;margin-top:10px;'>🏪 Seller Type</p>", unsafe_allow_html=True)
         inp_seller = st.selectbox(
             "Seller Type",
             options=["Dealer", "Individual"],
+            label_visibility="collapsed",
         )
+        st.markdown("<p style='color:#1e293b;font-size:13px;font-weight:600;margin-bottom:2px;margin-top:10px;'>⚙️ Transmission</p>", unsafe_allow_html=True)
         inp_trans = st.selectbox(
             "Transmission",
             options=["Manual", "Automatic"],
+            label_visibility="collapsed",
         )
 
     # Derived: Car_Age
     car_age = 2024 - inp_year
 
-    st.markdown(f"<p style='color:{C_MUTED};font-size:13px;'>Car Age: <b>{car_age} year(s)</b> (2024 − {inp_year})</p>",
-                unsafe_allow_html=True)
+    st.markdown(
+        f"<div style='background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;"
+        f"padding:10px 16px;margin-top:12px;display:inline-block;'>"
+        f"<span style='color:{C_MUTED};font-size:13px;'>"
+        f"🕰️ Car Age: <b style='color:#1e293b;'>{car_age} year(s)</b>"
+        f"&nbsp;&nbsp;(2024 &minus; {inp_year})</span></div>",
+        unsafe_allow_html=True,
+    )
+    st.markdown("<br>", unsafe_allow_html=True)
 
     # ── Predict button ─────────────────────────────────────────────────────────
-    st.markdown("")
     predict_clicked = st.button("🔮 Predict Selling Price", type="primary",
                                 use_container_width=True)
 
